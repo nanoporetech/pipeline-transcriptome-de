@@ -1,0 +1,14 @@
+---
+## General pipeline parameters:
+
+# Name of the pipeline:
+pipeline: "pipeline-transcriptome-de_phe"
+# ABSOLUTE path to directory holding the working directory:
+workdir_top: "/nfs/groups_ech/apps/active/bsipos/Workspaces"
+# Results directory:
+resdir: "results"
+# Repository URL:
+repo: "git URL"
+
+## Pipeline-specific parameters:
+
