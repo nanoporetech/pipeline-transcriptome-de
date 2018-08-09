@@ -12,3 +12,22 @@ repo: "git URL"
 
 ## Pipeline-specific parameters:
 
+transcriptome: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/ref/Homo_sapiens.GRCh38.cdna.all.fa"
+
+control_samples:
+    C1: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/C1_ONLL03822.fq"
+    C2: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/C2_ONLL03823.fq"
+    C3: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/C3_ONLL03824.fq"
+
+treated_samples:
+    IR1: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/IR1_ONLL03825.fq"
+    IR2: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/IR2_ONLL03826.fq"
+    IR3: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/IR3_ONLL03827.fq"
+
+minimap_index_opts: ""
+
+minimap2_opts: ""
+
+minimum_mapping_quality: 10
+
+threads: 50
