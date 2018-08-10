@@ -13,5 +13,5 @@ dds <- DESeq(dds)
 res <- results(dds, alpha=0.05)
 resOrdered <- res[order(res$pvalue),]
 
-head(resOrdered)
-write.csv(as.data.frame(resOrdered), file="de_analysis/deseq2_results.tsv", sep="\t")
+summary(resOrdered)
+write.table(as.data.frame(resOrdered), file="de_analysis/deseq2_results.tsv", sep="\t")
