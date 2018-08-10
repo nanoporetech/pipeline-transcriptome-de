@@ -8,7 +8,9 @@ cts <- as.matrix(read.csv("merged/all_counts.tsv", sep="\t", row.names="Referenc
 coldata <- read.csv("de_analysis/coldata.tsv", row.names="sample", sep="\t")
 
 cat("Performing differential expression analysis.")
+cts <- cts[, rownames(coldata)]
 dds <- DESeqDataSetFromMatrix(countData = cts, colData = coldata, design = ~ condition)
+dds$condition <- relevel(dds$condition, ref = "untreated")
 dds <- DESeq(dds)
 res <- results(dds, alpha=0.05)
 resOrdered <- res[order(res$pvalue),]
