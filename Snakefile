@@ -1,6 +1,8 @@
 
 import os
 from os import path
+import pandas as pd
+from collections import OrderedDict
 
 configfile: "config.yml"
 workdir: path.join(config["workdir_top"], config["pipeline"])
@@ -49,6 +51,49 @@ rule map_reads: ## map reads using minimap2
     samtools index {output.bam}
     """
 
+rule count_reads:
+    input:
+        bam = rules.map_reads.output.bam
+    output:
+        tsv = "counts/{sample}.tsv"
+    params:
+        min_mq = config["minimum_mapping_quality"],
+    conda: "env.yml"
+    shell: """
+        bam_count_reads.py -a {params.min_mq} -t {output.tsv} {input.bam}
+    """
+
+rule merge_counts:
+    input:
+        count_tsvs = expand("counts/{sample}.tsv", sample=all_samples.keys()),
+    output:
+        tsv = "merged/all_counts.tsv"
+    shell:"""
+    {SNAKEDIR}/scripts/merge_count_tsvs.py -z -o {output.tsv} {input.count_tsvs}
+    """
+
+rule write_coldata:
+    input:
+    output:
+        coldata = "de_analysis/coldata.tsv"
+    run:
+        samples, conditions, types = [], [], []
+        for sample in control_samples.keys():
+            samples.append(sample)
+            conditions.append("untreated")
+            types.append("single-read")
+        for sample in treated_samples.keys():
+            samples.append(sample)
+            conditions.append("treated")
+            types.append("single-read")
+
+        df = pd.DataFrame(OrderedDict([('sample', samples),('condition', conditions),('type', types)]))
+        df.to_csv(output.coldata, sep="\t", index=False)
+
+
 rule all:
     input:
-        mapped_samples = expand("alignments/{sample}.bam", sample=all_samples.keys())
+        mapped_samples = expand("alignments/{sample}.bam", sample=all_samples.keys()),
+        count_tsvs = expand("counts/{sample}.tsv", sample=all_samples.keys()),
+        merged_tsv = "merged/all_counts.tsv",
+        coldata = "de_analysis/coldata.tsv",
