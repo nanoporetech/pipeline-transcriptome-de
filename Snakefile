@@ -68,6 +68,7 @@ rule merge_counts:
         count_tsvs = expand("counts/{sample}.tsv", sample=all_samples.keys()),
     output:
         tsv = "merged/all_counts.tsv"
+    conda: "env.yml"
     shell:"""
     {SNAKEDIR}/scripts/merge_count_tsvs.py -z -o {output.tsv} {input.count_tsvs}
     """
@@ -90,6 +91,17 @@ rule write_coldata:
         df = pd.DataFrame(OrderedDict([('sample', samples),('condition', conditions),('type', types)]))
         df.to_csv(output.coldata, sep="\t", index=False)
 
+rule deseq_analysis:
+    input:
+        coldata = rules.write_coldata.output.coldata,
+        tsv = rules.merge_counts.output.tsv,
+    output:
+        res = "de_analysis/deseq2_results.tsv"
+    conda: "env.yml"
+    shell:"""
+    {SNAKEDIR}/scripts/deseq2_analysis.R
+    """
+
 
 rule all:
     input:
@@ -97,3 +109,5 @@ rule all:
         count_tsvs = expand("counts/{sample}.tsv", sample=all_samples.keys()),
         merged_tsv = "merged/all_counts.tsv",
         coldata = "de_analysis/coldata.tsv",
+        res = "de_analysis/deseq2_results.tsv",
+        
