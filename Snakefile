@@ -96,6 +96,7 @@ rule deseq_analysis:
         tsv = rules.merge_counts.output.tsv,
     output:
         res = "de_analysis/deseq2_results.tsv"
+        pdf = "de_analysis/deseq2_plots.pdf"
     conda: "env.yml"
     shell:"""
     {SNAKEDIR}/scripts/deseq2_analysis.R

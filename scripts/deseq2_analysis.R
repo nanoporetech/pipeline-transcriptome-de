@@ -24,4 +24,7 @@ suppressMessages(library("ggplot2"))
 pdf("de_analysis/deseq2_plots.pdf")
 plotMA(resOrdered, ylim=c(-3,3))
 
+resLFC <- lfcShrink(dds, coef="condition_treated_vs_untreated", type="apeglm")
+plotMA(resLFC, xlim=xlim, ylim=ylim, main="apeglm")
+
 dev.off()
