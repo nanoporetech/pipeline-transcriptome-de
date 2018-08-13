@@ -60,7 +60,7 @@ rule count_reads:
         min_mq = config["minimum_mapping_quality"],
     conda: "env.yml"
     shell: """
-        bam_count_reads.py -a {params.min_mq} -t {output.tsv} {input.bam}
+        {SNAKEDIR}/scripts/bam_count_reads.py -a {params.min_mq} -t {output.tsv} {input.bam}
     """
 
 rule merge_counts:
