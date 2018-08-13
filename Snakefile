@@ -42,12 +42,11 @@ rule map_reads: ## map reads using minimap2
        bam = "alignments/{sample}.bam"
     params:
         opts = config["minimap2_opts"],
-        min_mq = config["minimum_mapping_quality"],
     conda: "env.yml"
     threads: config["threads"]
     shell:"""
     minimap2 -t {threads} -ax splice {params.opts} {input.index} {input.fastq}\
-    | samtools view -q {params.min_mq} -F 2304 -Sb | samtools sort -@ {threads} - -o {output.bam};
+    | samtools view -F 2304 -Sb | samtools sort -@ {threads} - -o {output.bam};
     samtools index {output.bam}
     """
 
