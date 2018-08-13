@@ -7,7 +7,7 @@ cat("Loading counts and conditions.\n")
 cts <- as.matrix(read.csv("merged/all_counts.tsv", sep="\t", row.names="Reference"))
 coldata <- read.csv("de_analysis/coldata.tsv", row.names="sample", sep="\t")
 
-cat("Performing differential expression analysis.")
+cat("Performing differential expression analysis.\n")
 cts <- cts[, rownames(coldata)]
 dds <- DESeqDataSetFromMatrix(countData = cts, colData = coldata, design = ~ condition)
 dds$condition <- relevel(dds$condition, ref = "untreated")
@@ -17,3 +17,11 @@ resOrdered <- res[order(res$pvalue),]
 
 summary(resOrdered)
 write.table(as.data.frame(resOrdered), file="de_analysis/deseq2_results.tsv", sep="\t")
+
+cat("Generating plots.\n")
+suppressMessages(library("ggplot2"))
+
+pdf("de_analysis/deseq2_plots.pdf")
+plotMA(resOrdered, ylim=c(-3,3))
+
+dev.off()
