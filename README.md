@@ -5,10 +5,10 @@ This pipeline uses [minimap2](https://github.com/lh3/minimap2) and [DESeq2](http
 
 Dependencies 
 ------------
-    * [miniconda](https://conda.io/miniconda.html) - install it according to the [instructions](https://conda.io/docs/user-guide/install/index.html)
-    * [snakemake](https://anaconda.org/bioconda/snakemake) install using `conda`.
-    * [pandas](https://anaconda.org/conda-forge/pandas) - install using `conda`.
-    * The rest of the dependencies are automatically installed using the `conda` feature of `snakemake`.
+- [miniconda](https://conda.io/miniconda.html) - install it according to the [instructions](https://conda.io/docs/user-guide/install/index.html).
+- [snakemake](https://anaconda.org/bioconda/snakemake) install using `conda`.
+- [pandas](https://anaconda.org/conda-forge/pandas) - install using `conda`.
+- The rest of the dependencies are automatically installed using the `conda` feature of `snakemake`.
 
 Installation
 ------------
@@ -26,7 +26,7 @@ The input files and parameters are specified in `config.yml`:
 
 - `transcriptome` - the input transcriptome.
 - `control_samples` - a dictionary with control sample names and paths to the fastq files.
-- `treated_samples` - a dictionary with treated sample names and paths to the fastq files
+- `treated_samples` - a dictionary with treated sample names and paths to the fastq files.
 
 Usage
 -----
