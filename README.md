@@ -1,10 +1,11 @@
 Pipeline for differential gene expression analysis using long reads
 ==================================================================
 
-This pipeline uses [minimap2](https://github.com/lh3/minimap2) and [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html) to automate simple [differential transcript expression](https://www.ebi.ac.uk/training/online/course/functional-genomics-ii-common-technologies-and-data-analysis-methods/differential-gene) workflows on long read data.
+This pipeline uses [snakemake](https://snakemake.readthedocs.io/en/stable/), [minimap2](https://github.com/lh3/minimap2) and [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html) to automate simple [differential transcript expression](https://www.ebi.ac.uk/training/online/course/functional-genomics-ii-common-technologies-and-data-analysis-methods/differential-gene) workflows on long read data.
 
 Dependencies 
 ------------
+
 - [miniconda](https://conda.io/miniconda.html) - install it according to the [instructions](https://conda.io/docs/user-guide/install/index.html).
 - [snakemake](https://anaconda.org/bioconda/snakemake) install using `conda`.
 - [pandas](https://anaconda.org/conda-forge/pandas) - install using `conda`.
