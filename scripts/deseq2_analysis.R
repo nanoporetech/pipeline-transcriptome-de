@@ -25,6 +25,8 @@ pdf("de_analysis/deseq2_plots.pdf")
 plotMA(resOrdered, ylim=c(-3,3))
 
 resLFC <- lfcShrink(dds, coef="condition_treated_vs_untreated", type="apeglm")
+xlim <- c(1,1e5)
+ylim <- c(-3,3)
 plotMA(resLFC, xlim=xlim, ylim=ylim, main="apeglm")
 
 dev.off()

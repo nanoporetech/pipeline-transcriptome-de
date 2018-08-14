@@ -95,8 +95,8 @@ rule deseq_analysis:
         coldata = rules.write_coldata.output.coldata,
         tsv = rules.merge_counts.output.tsv,
     output:
-        res = "de_analysis/deseq2_results.tsv"
-        pdf = "de_analysis/deseq2_plots.pdf"
+        res = "de_analysis/deseq2_results.tsv",
+        pdf = "de_analysis/deseq2_plots.pdf",
     conda: "env.yml"
     shell:"""
     {SNAKEDIR}/scripts/deseq2_analysis.R
