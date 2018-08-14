@@ -20,13 +20,51 @@ write.table(as.data.frame(resOrdered), file="de_analysis/deseq2_results.tsv", se
 
 cat("Generating plots.\n")
 suppressMessages(library("ggplot2"))
+suppressMessages(library("RColorBrewer"))
+suppressMessages(library("vsn"))
+suppressMessages(library("pheatmap"))
+suppressMessages(library("hexbin"))
 
 pdf("de_analysis/deseq2_plots.pdf")
-plotMA(resOrdered, ylim=c(-3,3))
+plotMA(resOrdered, ylim=c(-3,3), main="MA plot")
+
+ggplot(data.frame(resOrdered), aes(x=log2FoldChange, 
+                        y=-log10(resOrdered$pvalue))) + 
+                        geom_point(alpha = 0.6) +
+                        theme_bw() +
+                        xlab("Log 2 Fold Change") +
+                        ylab("-log10 Adjusted pvalue") +
+                        ggtitle("Volcano plot: Control vs. Treated")
+
 
 resLFC <- lfcShrink(dds, coef="condition_treated_vs_untreated", type="apeglm")
 xlim <- c(1,1e5)
 ylim <- c(-3,3)
-plotMA(resLFC, xlim=xlim, ylim=ylim, main="apeglm")
+plotMA(resLFC, xlim=xlim, ylim=ylim, main="apeglm MA plot")
 
-dev.off()
+ggplot(data.frame(resLFC), aes(x=log2FoldChange, 
+                        y=-log10(resLFC$pvalue))) + 
+                        geom_point(alpha = 0.6) +
+                        theme_bw() +
+                        xlab("Log 2 Fold Change") +
+                        ylab("-log10 Adjusted pvalue") +
+                        ggtitle("apeglm volcano plot: Control vs. Treated")
+
+vsd <- vst(dds, blind=FALSE)
+sampleDists <- dist(t(assay(vsd)))
+
+sampleDistMatrix <- as.matrix(sampleDists)
+rownames(sampleDistMatrix) <- paste(vsd$condition, vsd$type, sep="-")
+colnames(sampleDistMatrix) <- NULL
+colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
+pheatmap(sampleDistMatrix,
+         clustering_distance_rows=sampleDists,
+         clustering_distance_cols=sampleDists,
+         col=colors)
+
+plotPCA(vsd, intgroup=c("condition"))
+
+plotDispEsts(dds)
+
+meanSdPlot(assay(vsd))
+
