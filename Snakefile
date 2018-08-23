@@ -34,32 +34,19 @@ rule build_minimap_index: ## build minimap2 index
         minimap2 -t {threads} {params.opts} -I 1000G -d {output.index} {input.genome}
     """
 
-rule map_reads: ## map reads using minimap2
+rule map_and_count: ## map reads using minimap2
     input:
        index = rules.build_minimap_index.output.index,
        fastq = lambda wildcards: all_samples[wildcards.sample]
     output:
-       bam = "alignments/{sample}.bam"
+        tsv = "counts/{sample}.tsv"
     params:
         opts = config["minimap2_opts"],
     conda: "env.yml"
     threads: config["threads"]
     shell:"""
-    minimap2 -t {threads} -ax splice {params.opts} {input.index} {input.fastq}\
-    | samtools view -F 2304 -Sb | samtools sort -@ {threads} - -o {output.bam};
-    samtools index {output.bam}
-    """
-
-rule count_reads:
-    input:
-        bam = rules.map_reads.output.bam
-    output:
-        tsv = "counts/{sample}.tsv"
-    params:
-        min_mq = config["minimum_mapping_quality"],
-    conda: "env.yml"
-    shell: """
-        {SNAKEDIR}/scripts/bam_count_reads.py -a {params.min_mq} -t {output.tsv} {input.bam}
+    minimap2 -t {threads} -x map-ont -p0 {params.opts} {input.index} {input.fastq}\
+    | {SNAKEDIR}/pinfish/transcript_abundance/transcript_abundance - > {output.tsv};
     """
 
 rule merge_counts:
@@ -105,7 +92,6 @@ rule deseq_analysis:
 
 rule all:
     input:
-        mapped_samples = expand("alignments/{sample}.bam", sample=all_samples.keys()),
         count_tsvs = expand("counts/{sample}.tsv", sample=all_samples.keys()),
         merged_tsv = "merged/all_counts.tsv",
         coldata = "de_analysis/coldata.tsv",

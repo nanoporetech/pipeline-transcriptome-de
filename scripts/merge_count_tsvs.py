@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import argparse
-import pandas as pd
 from os import path
+import pandas as pd
+import numpy as np
 from functools import reduce
 
 # Parse command line arguments:
@@ -24,7 +25,17 @@ parser.add_argument(
 if __name__ == '__main__':
     args = parser.parse_args()
 
-    dfs = [pd.read_csv(x, sep="\t").rename(columns={'Count': path.basename(x).split('.tsv')[0]}) for x in args.tsvs]
+    dfs = {x: pd.read_csv(x, sep="\t") for x in args.tsvs}
+
+    ndfs = []
+    for x, df in dfs.items():
+        # Transform counts to integers:
+        df.Count = np.array(df.Count, dtype=int)
+        # Take only non-zero counts:
+        df = df[df.Count > 0]
+        df = df.rename(columns={'Count': path.basename(x).split('.tsv')[0]})
+        ndfs.append(df)
+    dfs = ndfs
 
     df_merged = reduce(lambda left, right: pd.merge(left, right, on=args.f, how=args.j), dfs)
     if args.z:
