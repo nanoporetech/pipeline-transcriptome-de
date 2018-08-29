@@ -39,14 +39,20 @@ rule map_and_count: ## map reads using minimap2
        index = rules.build_minimap_index.output.index,
        fastq = lambda wildcards: all_samples[wildcards.sample]
     output:
-        tsv = "counts/{sample}.tsv"
+        tsv = "counts/{sample}.tsv",
+        compat = "compats/{sample}.tsv",
     params:
         opts = config["minimap2_opts"],
+        a = config["min_aln_fraction"],
+        m = config["min_read_length"],
+        n = config["nr_em_iters"],
+        s = config["score_threshold"],
     conda: "env.yml"
     threads: config["threads"]
     shell:"""
     minimap2 -t {threads} -x map-ont -p0 {params.opts} {input.index} {input.fastq}\
-    | {SNAKEDIR}/pinfish/transcript_abundance/transcript_abundance - > {output.tsv};
+    | {SNAKEDIR}/pinfish/transcript_abundance/transcript_abundance -t {threads}\
+    -v -a {params.a} -m {params.m} -n {params.n} -s {params.s} -c {output.compat} - > {output.tsv};
     """
 
 rule merge_counts:
