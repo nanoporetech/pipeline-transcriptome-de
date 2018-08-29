@@ -30,4 +30,14 @@ minimap2_opts: ""
 
 minimum_mapping_quality: 10
 
+# Abundance estimation parameters:
+
+min_aln_fraction: 0.5
+
+min_read_length: 0
+
+nr_em_iters: 10
+
+score_threshold: 0.95
+
 threads: 50
