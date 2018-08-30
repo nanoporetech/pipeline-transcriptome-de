@@ -37,19 +37,6 @@ ggplot(data.frame(resOrdered), aes(x=log2FoldChange,
                         ggtitle("Volcano plot: Control vs. Treated")
 
 
-resLFC <- lfcShrink(dds, coef="condition_treated_vs_untreated", type="apeglm")
-xlim <- c(1,1e5)
-ylim <- c(-3,3)
-plotMA(resLFC, xlim=xlim, ylim=ylim, main="apeglm MA plot")
-
-ggplot(data.frame(resLFC), aes(x=log2FoldChange, 
-                        y=-log10(resLFC$pvalue))) + 
-                        geom_point(alpha = 0.6) +
-                        theme_bw() +
-                        xlab("Log 2 Fold Change") +
-                        ylab("-log10 Adjusted pvalue") +
-                        ggtitle("apeglm volcano plot: Control vs. Treated")
-
 vsd <- vst(dds, blind=FALSE)
 sampleDists <- dist(t(assay(vsd)))
 
