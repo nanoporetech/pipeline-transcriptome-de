@@ -34,30 +34,40 @@ rule build_minimap_index: ## build minimap2 index
         minimap2 -t {threads} {params.opts} -I 1000G -d {output.index} {input.genome}
     """
 
-rule map_and_count: ## map reads using minimap2
+rule map_reads: ## map reads using minimap2
     input:
        index = rules.build_minimap_index.output.index,
        fastq = lambda wildcards: all_samples[wildcards.sample]
     output:
-        tsv = "counts/{sample}.tsv",
-        compat = "compats/{sample}.tsv",
+       bam = "alignments/{sample}.bam",
+       sbam = "sorted_alignments/{sample}.bam",
     params:
         opts = config["minimap2_opts"],
-        a = config["min_aln_fraction"],
-        m = config["min_read_length"],
-        n = config["nr_em_iters"],
-        s = config["score_threshold"],
     conda: "env.yml"
     threads: config["threads"]
     shell:"""
-    minimap2 -t {threads} -x map-ont -p0 {params.opts} {input.index} {input.fastq}\
-    | {SNAKEDIR}/pinfish/transcript_abundance/transcript_abundance -t {threads}\
-    -v -a {params.a} -m {params.m} -n {params.n} -s {params.s} -c {output.compat} - > {output.tsv};
+    minimap2 -t {threads} -ax map-ont -p0 {params.opts} {input.index} {input.fastq}\
+    | samtools view -Sb > {output.bam};
+    samtools sort -@ {threads} {output.bam} -o {output.sbam};
+    samtools index {output.sbam};
+    """
+
+rule count_reads:
+    input:
+        bam = rules.map_reads.output.bam,
+        trs = config["transcriptome"],
+    output:
+        tsv_dir = "counts/{sample}_salmon"
+    params:
+    conda: "env.yml"
+    threads: config["threads"]
+    shell: """
+        salmon quant -p {threads} -t {input.trs} -l SF -a {input.bam} -o {output.tsv_dir}
     """
 
 rule merge_counts:
     input:
-        count_tsvs = expand("counts/{sample}.tsv", sample=all_samples.keys()),
+        count_tsvs = expand("counts/{sample}_salmon/quant.sf", sample=all_samples.keys()),
     output:
         tsv = "merged/all_counts.tsv"
     conda: "env.yml"
@@ -98,7 +108,7 @@ rule deseq_analysis:
 
 rule all:
     input:
-        count_tsvs = expand("counts/{sample}.tsv", sample=all_samples.keys()),
+        count_tsvs = expand("counts/{sample}_salmon", sample=all_samples.keys()),
         merged_tsv = "merged/all_counts.tsv",
         coldata = "de_analysis/coldata.tsv",
         res = "de_analysis/deseq2_results.tsv",

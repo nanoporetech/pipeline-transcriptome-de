@@ -30,10 +30,14 @@ if __name__ == '__main__':
     ndfs = []
     for x, df in dfs.items():
         # Transform counts to integers:
+        df = df.rename(columns={'TPM': 'Count', 'Name': 'Reference'})
         df.Count = np.array(df.Count, dtype=int)
         # Take only non-zero counts:
         df = df[df.Count > 0]
-        df = df.rename(columns={'Count': path.basename(x).split('.tsv')[0]})
+        df = df[["Reference", "Count"]]
+        df = df.sort_values(by=["Count"], ascending=False)
+        name = path.dirname(x).rsplit('/', 1)[1].split('_salmon')[0]
+        df = df.rename(columns={'Count': name})
         ndfs.append(df)
     dfs = ndfs
 
