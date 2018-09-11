@@ -30,6 +30,8 @@ minimap2_opts: ""
 
 minimum_mapping_quality: 10
 
+maximum_secondary: 100
+
 # Abundance estimation parameters:
 
 min_aln_fraction: 0.5

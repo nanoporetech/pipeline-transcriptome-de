@@ -43,10 +43,11 @@ rule map_reads: ## map reads using minimap2
        sbam = "sorted_alignments/{sample}.bam",
     params:
         opts = config["minimap2_opts"],
+        msec = config["maximum_secondary"]
     conda: "env.yml"
     threads: config["threads"]
     shell:"""
-    minimap2 -t {threads} -ax map-ont -p0 {params.opts} {input.index} {input.fastq}\
+    minimap2 -t {threads} -ax map-ont -p0 -N {opts.msec} {params.opts} {input.index} {input.fastq}\
     | samtools view -Sb > {output.bam};
     samtools sort -@ {threads} {output.bam} -o {output.sbam};
     samtools index {output.sbam};
@@ -57,7 +58,8 @@ rule count_reads:
         bam = rules.map_reads.output.bam,
         trs = config["transcriptome"],
     output:
-        tsv_dir = "counts/{sample}_salmon"
+        tsv_dir = "counts/{sample}_salmon",
+        tsv = "counts/{sample}_salmon/quant.sf",
     params:
     conda: "env.yml"
     threads: config["threads"]
