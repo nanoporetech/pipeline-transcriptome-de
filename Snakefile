@@ -47,7 +47,7 @@ rule map_reads: ## map reads using minimap2
     conda: "env.yml"
     threads: config["threads"]
     shell:"""
-    minimap2 -t {threads} -ax map-ont -p0 -N {opts.msec} {params.opts} {input.index} {input.fastq}\
+    minimap2 -t {threads} -ax map-ont -p0 -N {params.msec} {params.opts} {input.index} {input.fastq}\
     | samtools view -Sb > {output.bam};
     samtools sort -@ {threads} {output.bam} -o {output.sbam};
     samtools index {output.sbam};
