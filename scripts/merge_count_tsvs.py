@@ -30,7 +30,7 @@ if __name__ == '__main__':
     ndfs = []
     for x, df in dfs.items():
         # Transform counts to integers:
-        df = df.rename(columns={'TPM': 'Count', 'Name': 'Reference'})
+        df = df.rename(columns={'NumReads': 'Count', 'Name': 'Reference'})
         df.Count = np.array(df.Count, dtype=int)
         # Take only non-zero counts:
         df = df[df.Count > 0]
