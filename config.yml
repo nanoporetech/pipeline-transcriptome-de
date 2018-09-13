@@ -32,4 +32,12 @@ minimap2_opts: ""
 
 maximum_secondary: 100
 
+# Count filtering options:
+
+min_samps_gene_expr: 4
+min_samps_feature_expr: 2
+min_gene_expr: 10
+min_feature_expr: 10
+
 threads: 50
+

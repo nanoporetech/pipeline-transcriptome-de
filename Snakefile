@@ -95,16 +95,32 @@ rule write_coldata:
         df = pd.DataFrame(OrderedDict([('sample', samples),('condition', conditions),('type', types)]))
         df.to_csv(output.coldata, sep="\t", index=False)
 
-rule deseq_analysis:
+rule write_de_params:
     input:
+    output:
+        de_params = "de_analysis/de_params.tsv"
+    run:
+        d = OrderedDict()
+        d["Annotation"] = [config["annotation"]]
+        d["min_samps_gene_expr"] = [config["min_samps_gene_expr"]]
+        d["min_samps_feature_expr"] = [config["min_samps_feature_expr"]]
+        d["min_gene_expr"] = [config["min_gene_expr"]]
+        d["min_feature_expr"] = [config["min_feature_expr"]]
+        df = pd.DataFrame(d)
+        df.to_csv(output.de_params, sep="\t", index=False)
+
+
+rule de_analysis:
+    input:
+        de_params = rules.write_de_params.output.de_params,
         coldata = rules.write_coldata.output.coldata,
         tsv = rules.merge_counts.output.tsv,
     output:
-        res = "de_analysis/deseq2_results.tsv",
-        pdf = "de_analysis/deseq2_plots.pdf",
+        res = "de_analysis/de_results.tsv",
+        pdf = "de_analysis/de_plots.pdf",
     conda: "env.yml"
     shell:"""
-    {SNAKEDIR}/scripts/deseq2_analysis.R
+    {SNAKEDIR}/scripts/de_analysis.R
     """
 
 
@@ -113,5 +129,5 @@ rule all:
         count_tsvs = expand("counts/{sample}_salmon", sample=all_samples.keys()),
         merged_tsv = "merged/all_counts.tsv",
         coldata = "de_analysis/coldata.tsv",
-        res = "de_analysis/deseq2_results.tsv",
-        
+        de_params = "de_analysis/de_params.tsv",
+        res = "de_analysis/de_results.tsv",
