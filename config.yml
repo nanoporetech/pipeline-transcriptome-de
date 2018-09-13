@@ -14,6 +14,8 @@ repo: "git URL"
 
 transcriptome: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/ref/Homo_sapiens.GRCh38.cdna.all.fa"
 
+annotation: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/ref/Homo_sapiens.GRCh38.93.gtf"
+
 control_samples:
     C1: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/C1.fq"
     C2: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/C2.fq"
@@ -28,18 +30,6 @@ minimap_index_opts: ""
 
 minimap2_opts: ""
 
-minimum_mapping_quality: 10
-
 maximum_secondary: 100
-
-# Abundance estimation parameters:
-
-min_aln_fraction: 0.5
-
-min_read_length: 0
-
-nr_em_iters: 10
-
-score_threshold: 0.95
 
 threads: 50
