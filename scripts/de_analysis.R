@@ -4,7 +4,7 @@ suppressMessages(library("DRIMSeq"))
 suppressMessages(library("GenomicFeatures"))
 
 cat("Loading counts, conditions and parameters.\n")
-cts <- as.matrix(read.csv("merged/all_counts.tsv", sep="\t", row.names="Reference"))
+cts <- as.matrix(read.csv("merged/all_counts.tsv", sep="\t", row.names="Reference", stringsAsFactors=FALSE))
 coldata <- read.csv("de_analysis/coldata.tsv", row.names="sample", sep="\t")
 coldata$sample_id <- rownames(coldata)
 
@@ -37,8 +37,31 @@ d <- dmDSdata(counts=counts, samples=coldata)
 d <- dmFilter(d, min_samps_gene_expr = de_params$min_samps_gene_expr[[1]], min_samps_feature_expr = de_params$min_samps_feature_expr[[1]],
               min_gene_expr = de_params$min_gene_expr[[1]], min_feature_expr = de_params$min_feature_expr[[1]])
 
-print(d)
+design <- model.matrix(~condition, data=DRIMSeq::samples(d))
+
+suppressMessages(library("dplyr"))
+
+# Sum transcript counts into gene counts:
+
+trs_cts <- counts(d)
+gene_cts <- trs_cts %>% select(c(1, 3:ncol(trs_cts)))  %>% group_by(gene_id) %>% summarise_all(funs(sum)) %>% data.frame()
+rownames(gene_cts) <- gene_cts$gene_id
+gene_cts$gene_id <- NULL
+
+head(trs_cts)
+head(gene_cts)
 
 # Differential gene expression using edgeR:
+suppressMessages(library("edgeR"))
 
+cat("foo\n")
+
+y <- DGEList(gene_cts)
+y <- calcNormFactors(y)
+y <- estimateDisp(y,design)
+fit <- glmQLFit(y,design)
+qlf <- glmQLFTest(fit,coef=2)
+edger_res <- topTags(qlf, n=nrow(y), sort.by="PValue")[[1]]
+
+head(edger_res)
 
