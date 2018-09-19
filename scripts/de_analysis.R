@@ -7,6 +7,7 @@ cat("Loading counts, conditions and parameters.\n")
 cts <- as.matrix(read.csv("merged/all_counts.tsv", sep="\t", row.names="Reference", stringsAsFactors=FALSE))
 coldata <- read.csv("de_analysis/coldata.tsv", row.names="sample", sep="\t")
 coldata$sample_id <- rownames(coldata)
+coldata$condition <- factor(coldata$condition, levels=rev(levels(coldata$condition)))
 
 de_params <- read.csv("de_analysis/de_params.tsv", sep="\t", stringsAsFactors=FALSE)
 
@@ -48,20 +49,47 @@ gene_cts <- trs_cts %>% select(c(1, 3:ncol(trs_cts)))  %>% group_by(gene_id) %>%
 rownames(gene_cts) <- gene_cts$gene_id
 gene_cts$gene_id <- NULL
 
-head(trs_cts)
-head(gene_cts)
-
 # Differential gene expression using edgeR:
 suppressMessages(library("edgeR"))
-
-cat("foo\n")
 
 y <- DGEList(gene_cts)
 y <- calcNormFactors(y)
 y <- estimateDisp(y,design)
 fit <- glmQLFit(y,design)
-qlf <- glmQLFTest(fit,coef=2)
+qlf <- glmQLFTest(fit)
 edger_res <- topTags(qlf, n=nrow(y), sort.by="PValue")[[1]]
 
-head(edger_res)
+pdf("de_analysis/results_dge.pdf")
+plotMD(qlf)
+abline(h=c(-1,1), col="blue")
+plotQLDisp(fit)
+
+write.table(as.data.frame(edger_res), file="de_analysis/results_dge.tsv", sep="\t")
+
+# Differential transcript usage using DEXSeq:
+suppressMessages(library("DEXSeq"))
+
+sample.data<-DRIMSeq::samples(d)
+count.data <- round(as.matrix(counts(d)[,-c(1:2)]))
+dxd <- DEXSeqDataSet(countData=count.data, sampleData=sample.data, design=~sample + exon + condition:exon, featureID=trs_cts$feature_id, groupID=trs_cts$gene_id)
+dxd <- estimateSizeFactors(dxd)
+dxd <- estimateDispersions(dxd)
+dxd <- nbinomLRT(dxd, reduced=~sample + exon)
+dxr <- DEXSeqResults(dxd, independentFiltering=FALSE)
+dxr.clean <- dxr[!is.na(dxr$padj), ]
+
+dev.off()
+pdf("de_analysis/results_dtu.pdf")
+#plotMA(dxr.clean, cex=0.8, alpha=0.05) # FIXME: does not work and complains about NAs.
+plotDispEsts(dxd)
+
+qval <- perGeneQValue(dxr) 
+dxr.g<-data.frame(gene=names(qval), qval)
+dxr.g <- dxr.g[order(dxr.g$qval),]
+
+dxr <- as.data.frame(dxr[,c("featureID", "groupID", "pvalue")])
+dxr <- dxr[order(dxr$pvalue),]
+
+write.table(dxr.g, file="de_analysis/results_dtu_gene.tsv", sep="\t")
+write.table(dxr, file="de_analysis/results_dtu_transcript.tsv", sep="\t")
 

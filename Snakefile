@@ -116,8 +116,8 @@ rule de_analysis:
         coldata = rules.write_coldata.output.coldata,
         tsv = rules.merge_counts.output.tsv,
     output:
-        res = "de_analysis/de_results.tsv",
-        pdf = "de_analysis/de_plots.pdf",
+        res_dge = "de_analysis/results_dge.tsv",
+        pdf_dge = "de_analysis/results_dge.pdf",
     conda: "env.yml"
     shell:"""
     {SNAKEDIR}/scripts/de_analysis.R
@@ -130,4 +130,4 @@ rule all:
         merged_tsv = "merged/all_counts.tsv",
         coldata = "de_analysis/coldata.tsv",
         de_params = "de_analysis/de_params.tsv",
-        res = "de_analysis/de_results.tsv",
+        res_dge = "de_analysis/results_dge.pdf",
