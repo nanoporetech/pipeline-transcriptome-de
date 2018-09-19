@@ -32,6 +32,8 @@ minimap2_opts: ""
 
 maximum_secondary: 100
 
+secondary_score_ratio: 1.0
+
 # Count filtering options:
 
 min_samps_gene_expr: 4

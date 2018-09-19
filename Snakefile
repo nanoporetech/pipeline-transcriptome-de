@@ -1,4 +1,3 @@
-
 import os
 from os import path
 import pandas as pd
@@ -43,11 +42,12 @@ rule map_reads: ## map reads using minimap2
        sbam = "sorted_alignments/{sample}.bam",
     params:
         opts = config["minimap2_opts"],
-        msec = config["maximum_secondary"]
+        msec = config["maximum_secondary"],
+        psec = config["secondary_score_ratio"],
     conda: "env.yml"
     threads: config["threads"]
     shell:"""
-    minimap2 -t {threads} -ax map-ont -p 1.0 -N {params.msec} {params.opts} {input.index} {input.fastq}\
+    minimap2 -t {threads} -ax map-ont -p {params.psec} -N {params.msec} {params.opts} {input.index} {input.fastq}\
     | samtools view -Sb > {output.bam};
     samtools sort -@ {threads} {output.bam} -o {output.sbam};
     samtools index {output.sbam};
@@ -118,6 +118,9 @@ rule de_analysis:
     output:
         res_dge = "de_analysis/results_dge.tsv",
         pdf_dge = "de_analysis/results_dge.pdf",
+        res_dtu_gene = "de_analysis/results_dtu_gene.tsv",
+        res_dtu_trs = "de_analysis/results_dtu_transcript.tsv",
+        res_dtu_stager = "de_analysis/results_dtu_stageR.tsv",
     conda: "env.yml"
     shell:"""
     {SNAKEDIR}/scripts/de_analysis.R

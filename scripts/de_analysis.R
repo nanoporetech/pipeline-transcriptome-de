@@ -93,3 +93,19 @@ dxr <- dxr[order(dxr$pvalue),]
 write.table(dxr.g, file="de_analysis/results_dtu_gene.tsv", sep="\t")
 write.table(dxr, file="de_analysis/results_dtu_transcript.tsv", sep="\t")
 
+# stageR analysis of DEXSeq results:
+source("https://bioconductor.org/biocLite.R")
+biocLite(pkgs=c("stageR"), suppressUpdates=TRUE, suppressAutoUpdate=TRUE, siteRepos=character(), ask=FALSE)
+library(stageR)
+
+pConfirmation <- matrix(dxr$pvalue, ncol=1)
+dimnames(pConfirmation) <- list(dxr$featureID, "transcript")
+pScreen <- qval
+tx2gene <- as.data.frame(dxr[,c("featureID", "groupID")])
+
+stageRObj <- stageRTx(pScreen=pScreen, pConfirmation=pConfirmation, pScreenAdjusted=TRUE, tx2gene=tx2gene)
+stageRObj <- stageWiseAdjustment(stageRObj, method="dtu", alpha=0.05)
+suppressWarnings({dex.padj <- getAdjustedPValues(stageRObj, order=TRUE, onlySignificantGenes=TRUE)})
+
+write.table(dex.padj, file="de_analysis/results_dtu_stageR.tsv", sep="\t")
+
