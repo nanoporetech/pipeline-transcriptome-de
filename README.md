@@ -46,15 +46,7 @@ Output
 - `alignments/*.bam` - sorted and indexed transcriptome alignments.
 - `merged/all_counts.tsv` - the transcript count table including all samples.
 - `de_analysis/coldata.tsv` - the condition table supplied to DESeq2.
-- `de_analysis/deseq2_results.tsv` - the results of the DESeq2 analysis. This table contains information on which genes are up-regulated in the experimental group (treated) with reference to the control group (untreated). The table contains:
-    * `row names` = transcript ID
-    * `baseMean` = the base mean value for each gene
-    * `log2FoldChange` = The log2 fold change of each transcript in the experiment group compared with the control (up- or down-regulated)
-    * `lfcSE` = log 2-fold change standard error
-    * `stat` = The Wald test statistic (Log2foldchange/lfcSE)
-    * `pvalue` = non-corrected pvalue (stat value compared against a normal distribution)
-    * `padj` = [Bonferroni corrected](https://en.wikipedia.org/wiki/Bonferroni_correction) pvalue (acounting for multiple comparisons)
-- `de_analysis/deseq2_plots.pdf` - visualisations of the DE analysis results and diagnostic plots.
+-  TODO
 
 Layout
 ------
@@ -78,3 +70,12 @@ info                    print pipeline information
 clean_workdir           delete working directory. WARNING: all data will be lost!
 clean_resdir            delete results directory. WARNING: all data will be lost!
 ```
+
+Reference
+--------
+
+This pipeline is largely based on the approach desscribed in the following paper:
+
+- Love MI, Soneson C and Patro R. *Swimming downstream: statistical analysis of differential transcript usage following Salmon quantification.* F1000Research 2018, 7:952
+(doi: [10.12688/f1000research.15398.2](http://dx.doi.org/10.12688/f1000research.15398.2))
+
