@@ -36,10 +36,10 @@ secondary_score_ratio: 1.0
 
 # Count filtering options:
 
-min_samps_gene_expr: 4
-min_samps_feature_expr: 2
+min_samps_gene_expr: 3
+min_samps_feature_expr: 1
 min_gene_expr: 10
-min_feature_expr: 10
+min_feature_expr: 3
 
 threads: 50
 
