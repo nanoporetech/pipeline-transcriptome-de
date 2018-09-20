@@ -5,12 +5,15 @@ suppressMessages(library("GenomicFeatures"))
 
 cat("Loading counts, conditions and parameters.\n")
 cts <- as.matrix(read.csv("merged/all_counts.tsv", sep="\t", row.names="Reference", stringsAsFactors=FALSE))
+
+# Set up sample data frame:
 coldata <- read.csv("de_analysis/coldata.tsv", row.names="sample", sep="\t")
 coldata$sample_id <- rownames(coldata)
 coldata$condition <- factor(coldata$condition, levels=rev(levels(coldata$condition)))
 
 de_params <- read.csv("de_analysis/de_params.tsv", sep="\t", stringsAsFactors=FALSE)
 
+cat("Loading annotation database.\n")
 txdb <- makeTxDbFromGFF(de_params$Annotation[[1]])
 txdf <- select(txdb, keys(txdb,"GENEID"), "TXNAME", "GENEID")
 tab <- table(txdf$GENEID)
@@ -26,24 +29,28 @@ strip_version<-function(x) {
 
 rownames(cts) <- strip_version(rownames(cts))
 
-cts <- cts[rownames(cts) %in% txdf$TXNAME, ] # FIXME!
+cts <- cts[rownames(cts) %in% txdf$TXNAME, ] # FIXME: filter for transcripts which are in the annotation. Why they are not all there? 
 
+# Reorder transcript/gene database to match input counts:
 txdf <- txdf[match(rownames(cts), txdf$TXNAME), ]
 rownames(txdf) <- NULL
 
+# Create counts data frame:
 counts<-data.frame(gene_id=txdf$GENEID, feature_id=txdf$TXNAME, cts)
 
+cat("Filtering counts using DRIMSeq.\n")
 d <- dmDSdata(counts=counts, samples=coldata)
 #
 d <- dmFilter(d, min_samps_gene_expr = de_params$min_samps_gene_expr[[1]], min_samps_feature_expr = de_params$min_samps_feature_expr[[1]],
               min_gene_expr = de_params$min_gene_expr[[1]], min_feature_expr = de_params$min_feature_expr[[1]])
 
+cat("Building model matrix.\n")
 design <- model.matrix(~condition, data=DRIMSeq::samples(d))
 
 suppressMessages(library("dplyr"))
 
 # Sum transcript counts into gene counts:
-
+cat("Sum transcript counts into gene counts.\n")
 trs_cts <- counts(d)
 gene_cts <- trs_cts %>% select(c(1, 3:ncol(trs_cts)))  %>% group_by(gene_id) %>% summarise_all(funs(sum)) %>% data.frame()
 rownames(gene_cts) <- gene_cts$gene_id
@@ -51,6 +58,7 @@ gene_cts$gene_id <- NULL
 
 # Differential gene expression using edgeR:
 suppressMessages(library("edgeR"))
+cat("Running differential gene expression analysis using edgeR.\n")
 
 y <- DGEList(gene_cts)
 y <- calcNormFactors(y)
@@ -68,6 +76,7 @@ write.table(as.data.frame(edger_res), file="de_analysis/results_dge.tsv", sep="\
 
 # Differential transcript usage using DEXSeq:
 suppressMessages(library("DEXSeq"))
+cat("Running differential transcript usage analysis using DEXSeq.\n")
 
 sample.data<-DRIMSeq::samples(d)
 count.data <- round(as.matrix(counts(d)[,-c(1:2)]))
@@ -94,10 +103,12 @@ write.table(dxr.g, file="de_analysis/results_dtu_gene.tsv", sep="\t")
 write.table(dxr, file="de_analysis/results_dtu_transcript.tsv", sep="\t")
 
 # stageR analysis of DEXSeq results:
+cat("Installing stageR.\n")
 source("https://bioconductor.org/biocLite.R")
 biocLite(pkgs=c("stageR"), suppressUpdates=TRUE, suppressAutoUpdate=TRUE, siteRepos=character(), ask=FALSE)
 library(stageR)
 
+cat("Running stageR analysis on the differential transcript usage results.\n")
 pConfirmation <- matrix(dxr$pvalue, ncol=1)
 dimnames(pConfirmation) <- list(dxr$featureID, "transcript")
 pScreen <- qval
