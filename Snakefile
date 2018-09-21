@@ -58,13 +58,13 @@ rule count_reads:
         bam = rules.map_reads.output.bam,
         trs = config["transcriptome"],
     output:
-        tsv_dir = "counts/{sample}_salmon",
         tsv = "counts/{sample}_salmon/quant.sf",
     params:
+        tsv_dir = "counts/{sample}_salmon",
     conda: "env.yml"
     threads: config["threads"]
     shell: """
-        salmon quant --noErrorModel -p {threads} -t {input.trs} -l SF -a {input.bam} -o {output.tsv_dir}
+        salmon quant --noErrorModel -p {threads} -t {input.trs} -l SF -a {input.bam} -o {params.tsv_dir}
     """
 
 rule merge_counts:
