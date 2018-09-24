@@ -1,7 +1,8 @@
 Pipeline for differential gene expression analysis using long reads
 ==================================================================
 
-This pipeline uses [snakemake](https://snakemake.readthedocs.io/en/stable/), [minimap2](https://github.com/lh3/minimap2) and [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html) to automate simple [differential transcript expression](https://www.ebi.ac.uk/training/online/course/functional-genomics-ii-common-technologies-and-data-analysis-methods/differential-gene) workflows on long read data.
+This pipeline uses [snakemake](https://snakemake.readthedocs.io/en/stable/), [minimap2](https://github.com/lh3/minimap2), [salmon](https://combine-lab.github.io/salmon/), [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html), [DEXSeq](https://bioconductor.org/packages/release/bioc/html/DEXSeq.html) and [stageR](https://bioconductor.org/packages/release/bioc/html/stageR.html) to automate simple [differential gene expression](https://www.ebi.ac.uk/training/online/course/functional-genomics-ii-common-technologies-and-data-analysis-methods/differential-gene) and [differential transcript usage](http://dx.doi.org/10.12688/f1000research.15398.2) workflows on long read data.
+
 
 Dependencies 
 ------------
@@ -17,7 +18,7 @@ Installation
 Clone the repository:
 
 ```bash
-git clone XXX
+git clone https://github.com/nanoporetech/pipeline-transcriptome-de.git
 ```
 
 Input
@@ -26,6 +27,7 @@ Input
 The input files and parameters are specified in `config.yml`:
 
 - `transcriptome` - the input transcriptome.
+- `annotation` - the input annotation in GFF format.
 - `control_samples` - a dictionary with control sample names and paths to the fastq files.
 - `treated_samples` - a dictionary with treated sample names and paths to the fastq files.
 
