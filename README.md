@@ -1,5 +1,5 @@
-Pipeline for differential gene expression analysis using long reads
-==================================================================
+Pipeline for differential transcript expression analysis using long reads
+=========================================================================
 
 This pipeline uses [snakemake](https://snakemake.readthedocs.io/en/stable/), [minimap2](https://github.com/lh3/minimap2) and [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html) to automate simple [differential transcript expression](https://www.ebi.ac.uk/training/online/course/functional-genomics-ii-common-technologies-and-data-analysis-methods/differential-gene) workflows on long read data.
 
@@ -17,7 +17,9 @@ Installation
 Clone the repository:
 
 ```bash
-git clone XXX
+git clone https://github.com/nanoporetech/pipeline-transcriptome-de.git
+cd pipeline-transcriptome-de
+git checkout bam_count_dte
 ```
 
 Input
