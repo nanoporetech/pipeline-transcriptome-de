@@ -16,6 +16,7 @@ transcriptome: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/ref/Homo_sapien
 
 annotation: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/ref/Homo_sapiens.GRCh38.93.gtf"
 
+# The samples should be named as <sample_id>.<patient_id>:
 control_samples:
     C1.p1: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/C1.fq"
     C2.p2: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/C2.fq"
