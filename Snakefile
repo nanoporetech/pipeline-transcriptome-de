@@ -129,7 +129,7 @@ rule de_analysis:
 
 rule all:
     input:
-        count_tsvs = expand("counts/{sample}_salmon", sample=all_samples.keys()),
+        count_tsvs = expand("counts/{sample}_salmon/quant.sf", sample=all_samples.keys()),
         merged_tsv = "merged/all_counts.tsv",
         coldata = "de_analysis/coldata.tsv",
         de_params = "de_analysis/de_params.tsv",
