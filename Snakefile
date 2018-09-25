@@ -82,17 +82,21 @@ rule write_coldata:
     output:
         coldata = "de_analysis/coldata.tsv"
     run:
-        samples, conditions, types = [], [], []
+        samples, conditions, patients, types = [], [], [], []
         for sample in control_samples.keys():
+            _, patient = sample.rsplit(".",1)
             samples.append(sample)
             conditions.append("untreated")
             types.append("single-read")
+            patients.append(patient)
         for sample in treated_samples.keys():
+            _, patient = sample.rsplit(".",1)
             samples.append(sample)
             conditions.append("treated")
             types.append("single-read")
+            patients.append(patient)
 
-        df = pd.DataFrame(OrderedDict([('sample', samples),('condition', conditions),('type', types)]))
+        df = pd.DataFrame(OrderedDict([('sample', samples), ('patient', patients),('condition', conditions),('type', types)]))
         df.to_csv(output.coldata, sep="\t", index=False)
 
 rule write_de_params:
@@ -129,7 +133,7 @@ rule de_analysis:
 
 rule all:
     input:
-        count_tsvs = expand("counts/{sample}_salmon", sample=all_samples.keys()),
+        count_tsvs = expand("counts/{sample}_salmon/quant.sf", sample=all_samples.keys()),
         merged_tsv = "merged/all_counts.tsv",
         coldata = "de_analysis/coldata.tsv",
         de_params = "de_analysis/de_params.tsv",

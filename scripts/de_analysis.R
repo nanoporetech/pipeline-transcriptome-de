@@ -45,7 +45,7 @@ d <- dmFilter(d, min_samps_gene_expr = de_params$min_samps_gene_expr[[1]], min_s
               min_gene_expr = de_params$min_gene_expr[[1]], min_feature_expr = de_params$min_feature_expr[[1]])
 
 cat("Building model matrix.\n")
-design <- model.matrix(~condition, data=DRIMSeq::samples(d))
+design <- model.matrix(~patient + condition, data=DRIMSeq::samples(d))
 
 suppressMessages(library("dplyr"))
 
@@ -80,7 +80,7 @@ cat("Running differential transcript usage analysis using DEXSeq.\n")
 
 sample.data<-DRIMSeq::samples(d)
 count.data <- round(as.matrix(counts(d)[,-c(1:2)]))
-dxd <- DEXSeqDataSet(countData=count.data, sampleData=sample.data, design=~sample + exon + condition:exon, featureID=trs_cts$feature_id, groupID=trs_cts$gene_id)
+dxd <- DEXSeqDataSet(countData=count.data, sampleData=sample.data, design=~sample + exon + patient:exon + condition:exon, featureID=trs_cts$feature_id, groupID=trs_cts$gene_id)
 dxd <- estimateSizeFactors(dxd)
 dxd <- estimateDispersions(dxd)
 dxd <- nbinomLRT(dxd, reduced=~sample + exon)
