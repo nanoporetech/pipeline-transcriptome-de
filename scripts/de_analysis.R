@@ -83,7 +83,7 @@ count.data <- round(as.matrix(counts(d)[,-c(1:2)]))
 dxd <- DEXSeqDataSet(countData=count.data, sampleData=sample.data, design=~sample + exon + condition:exon, featureID=trs_cts$feature_id, groupID=trs_cts$gene_id)
 dxd <- estimateSizeFactors(dxd)
 dxd <- estimateDispersions(dxd)
-dxd <- nbinomLRT(dxd, reduced=~sample + exon)
+dxd <- testForDEU(dxd, reducedModel=~sample + exon)
 dxr <- DEXSeqResults(dxd, independentFiltering=FALSE)
 dxr.clean <- dxr[!is.na(dxr$padj), ]
 
@@ -115,6 +115,7 @@ pScreen <- qval
 tx2gene <- as.data.frame(dxr[,c("featureID", "groupID")])
 
 stageRObj <- stageRTx(pScreen=pScreen, pConfirmation=pConfirmation, pScreenAdjusted=TRUE, tx2gene=tx2gene)
+# note: the choice of 0.05 here means you can *only* threshold at 5% OFDR later
 stageRObj <- stageWiseAdjustment(stageRObj, method="dtu", alpha=0.05)
 suppressWarnings({dex.padj <- getAdjustedPValues(stageRObj, order=TRUE, onlySignificantGenes=TRUE)})
 

@@ -84,5 +84,5 @@ Reference
 This pipeline is largely based on the approach described in the following paper:
 
 - Love MI, Soneson C and Patro R. *Swimming downstream: statistical analysis of differential transcript usage following Salmon quantification.* F1000Research 2018, 7:952
-(doi: [10.12688/f1000research.15398.2](http://dx.doi.org/10.12688/f1000research.15398.2))
+(doi: [10.12688/f1000research.15398.3](http://dx.doi.org/10.12688/f1000research.15398.3))
 
