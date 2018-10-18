@@ -83,7 +83,7 @@ count.data <- round(as.matrix(counts(d)[,-c(1:2)]))
 dxd <- DEXSeqDataSet(countData=count.data, sampleData=sample.data, design=~sample + exon + patient:exon + condition:exon, featureID=trs_cts$feature_id, groupID=trs_cts$gene_id)
 dxd <- estimateSizeFactors(dxd)
 dxd <- estimateDispersions(dxd)
-dxd <- nbinomLRT(dxd, reduced=~sample + exon)
+dxd <- testForDEU(dxd, reducedModel=~sample + exon + patient:exon)
 dxr <- DEXSeqResults(dxd, independentFiltering=FALSE)
 dxr.clean <- dxr[!is.na(dxr$padj), ]
 
