@@ -4,27 +4,27 @@
 # Name of the pipeline:
 pipeline: "pipeline-transcriptome-de_phe"
 # ABSOLUTE path to directory holding the working directory:
-workdir_top: "/nfs/groups_ech/apps/active/bsipos/Workspaces"
+workdir_top: "Workspaces"
 # Results directory:
 resdir: "results"
 # Repository URL:
-repo: "git URL"
+repo: "https://github.com/nanoporetech/pipeline-transcriptome-de"
 
 ## Pipeline-specific parameters:
 
-transcriptome: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/ref/Homo_sapiens.GRCh38.cdna.all.fa"
+transcriptome: "Homo_sapiens.GRCh38.cdna.all.fa"
 
-annotation: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/ref/Homo_sapiens.GRCh38.93.gtf"
+annotation: "Homo_sapiens.GRCh38.93.gtf"
 
 control_samples:
-    C1: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/C1.fq"
-    C2: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/C2.fq"
-    C3: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/C3.fq"
+    C1: "C1.fq"
+    C2: "C2.fq"
+    C3: "C3.fq"
 
 treated_samples:
-    IR1: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/IR1.fq"
-    IR2: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/IR2.fq"
-    IR3: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/IR3.fq"
+    IR1: "IR1.fq"
+    IR2: "IR2.fq"
+    IR3: "IR3.fq"
 
 minimap_index_opts: ""
 
@@ -34,12 +34,17 @@ maximum_secondary: 100
 
 secondary_score_ratio: 1.0
 
-# Count filtering options:
+# Count filtering options - customize these according to your experimental design:
 
+# Genes expressed in minimum this many samples:
 min_samps_gene_expr: 3
+# Transcripts expressed in minimum this many samples:
 min_samps_feature_expr: 1
+# Minimum gene counts:
 min_gene_expr: 10
+# Minimum transcript counts:
 min_feature_expr: 3
+
 
 threads: 50
 
