@@ -2,30 +2,30 @@
 ## General pipeline parameters:
 
 # Name of the pipeline:
-pipeline: "pipeline-transcriptome-de_phe"
+pipeline: "pipeline-transcriptome-de_paired"
 # ABSOLUTE path to directory holding the working directory:
-workdir_top: "/nfs/groups_ech/apps/active/bsipos/Workspaces"
+workdir_top: "Workspaces"
 # Results directory:
 resdir: "results"
 # Repository URL:
-repo: "git URL"
+repo: "https://github.com/nanoporetech/pipeline-transcriptome-de/tree/paired_dge_dtu"
 
 ## Pipeline-specific parameters:
 
-transcriptome: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/ref/Homo_sapiens.GRCh38.cdna.all.fa"
+transcriptome: "Homo_sapiens.GRCh38.cdna.all.fa"
 
-annotation: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/ref/Homo_sapiens.GRCh38.93.gtf"
+annotation: "Homo_sapiens.GRCh38.93.gtf"
 
 # The samples should be named as <sample_id>.<patient_id>:
 control_samples:
-    C1.p1: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/C1.fq"
-    C2.p2: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/C2.fq"
-    C3.p3: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/C3.fq"
+    C1.p1: "C1.fq"
+    C2.p2: "C2.fq"
+    C3.p3: "C3.fq"
 
 treated_samples:
-    IR1.p1: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/IR1.fq"
-    IR2.p2: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/IR2.fq"
-    IR3.p3: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/IR3.fq"
+    IR1.p1: "IR1.fq"
+    IR2.p2: "IR2.fq"
+    IR3.p3: "IR3.fq"
 
 minimap_index_opts: ""
 
