@@ -2,27 +2,27 @@
 ## General pipeline parameters:
 
 # Name of the pipeline:
-pipeline: "pipeline-transcriptome-de_phe_bam_dte"
+pipeline: "pipeline-transcriptome-de_bam_dte"
 # ABSOLUTE path to directory holding the working directory:
-workdir_top: "/nfs/groups_ech/apps/active/bsipos/Workspaces"
+workdir_top: "Workspaces"
 # Results directory:
 resdir: "results"
 # Repository URL:
-repo: "git URL"
+repo: "https://github.com/nanoporetech/pipeline-transcriptome-de/tree/bam_count_dte"
 
 ## Pipeline-specific parameters:
 
-transcriptome: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/ref/Homo_sapiens.GRCh38.cdna.all.fa"
+transcriptome: "Homo_sapiens.GRCh38.cdna.all.fa"
 
 control_samples:
-    C1: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/C1.fq"
-    C2: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/C2.fq"
-    C3: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/C3.fq"
+    C1: "C1.fq"
+    C2: "C2.fq"
+    C3: "C3.fq"
 
 treated_samples:
-    IR1: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/IR1.fq"
-    IR2: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/IR2.fq"
-    IR3: "/nfs/groups_ech/apps/active/bsipos/data/phe_cdna/IR3.fq"
+    IR1: "IR1.fq"
+    IR2: "IR2.fq"
+    IR3: "IR3.fq"
 
 minimap_index_opts: ""
 
