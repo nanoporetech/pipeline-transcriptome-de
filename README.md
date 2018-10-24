@@ -67,7 +67,6 @@ Layout
 * `scripts/`          - analysis scripts
 * `data/`             - input data needed by pipeline - use with caution to avoid bloated repo
 * `results/`          - pipeline results to be commited - use with caution to avoid bloated repo
-* `requirements.txt`  - list of python package dependencies
 
 Useful snakemake targets
 ------------------------
