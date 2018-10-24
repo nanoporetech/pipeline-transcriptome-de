@@ -35,11 +35,15 @@ maximum_secondary: 100
 
 secondary_score_ratio: 1.0
 
-# Count filtering options:
+# Count filtering options - customize these according to your experimental design:
 
+# Genes expressed in minimum this many samples:
 min_samps_gene_expr: 3
+# Transcripts expressed in minimum this many samples:
 min_samps_feature_expr: 1
+# Minimum gene counts:
 min_gene_expr: 10
+# Minimum transcript counts:
 min_feature_expr: 3
 
 threads: 50
