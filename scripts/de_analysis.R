@@ -52,9 +52,12 @@ suppressMessages(library("dplyr"))
 # Sum transcript counts into gene counts:
 cat("Sum transcript counts into gene counts.\n")
 trs_cts <- counts(d)
+write.table(trs_cts, file="merged/all_counts_filtered.tsv",sep="\t")
+
 gene_cts <- trs_cts %>% select(c(1, 3:ncol(trs_cts)))  %>% group_by(gene_id) %>% summarise_all(funs(sum)) %>% data.frame()
 rownames(gene_cts) <- gene_cts$gene_id
 gene_cts$gene_id <- NULL
+write.table(gene_cts, file="merged/all_gene_counts_filtered.tsv",sep="\t")
 
 # Differential gene expression using edgeR:
 suppressMessages(library("edgeR"))
