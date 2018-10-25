@@ -121,6 +121,8 @@ rule de_analysis:
         res_dtu_gene = "de_analysis/results_dtu_gene.tsv",
         res_dtu_trs = "de_analysis/results_dtu_transcript.tsv",
         res_dtu_stager = "de_analysis/results_dtu_stageR.tsv",
+        flt_counts = "merged/all_counts_filtered.tsv",
+        flt_counts_gens = "merged/all_gene_counts_filtered.tsv",
     conda: "env.yml"
     shell:"""
     {SNAKEDIR}/scripts/de_analysis.R
