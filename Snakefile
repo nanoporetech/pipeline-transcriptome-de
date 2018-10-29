@@ -61,10 +61,11 @@ rule count_reads:
         tsv = "counts/{sample}_salmon/quant.sf",
     params:
         tsv_dir = "counts/{sample}_salmon",
+        libtype = config["salmon_libtype"],
     conda: "env.yml"
     threads: config["threads"]
     shell: """
-        salmon quant --noErrorModel -p {threads} -t {input.trs} -l SF -a {input.bam} -o {params.tsv_dir}
+        salmon quant --noErrorModel -p {threads} -t {input.trs} -l {params.libtype} -a {input.bam} -o {params.tsv_dir}
     """
 
 rule merge_counts:

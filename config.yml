@@ -35,6 +35,8 @@ maximum_secondary: 100
 
 secondary_score_ratio: 1.0
 
+salmon_libtype: "SF"
+
 # Count filtering options - customize these according to your experimental design:
 
 # Genes expressed in minimum this many samples:
