@@ -3,6 +3,7 @@ Pipeline for differential gene expression (DGE) and differential transcript usag
 
 This pipeline uses [snakemake](https://snakemake.readthedocs.io/en/stable/), [minimap2](https://github.com/lh3/minimap2), [salmon](https://combine-lab.github.io/salmon/), [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html), [DEXSeq](https://bioconductor.org/packages/release/bioc/html/DEXSeq.html) and [stageR](https://bioconductor.org/packages/release/bioc/html/stageR.html) to automate simple [differential gene expression](https://www.ebi.ac.uk/training/online/course/functional-genomics-ii-common-technologies-and-data-analysis-methods/differential-gene) and [differential transcript usage](http://dx.doi.org/10.12688/f1000research.15398.2) workflows on long read data.
 
+If you have paired samples (e.g for example treated and untreated samples from the same individuals) use the [paired_dge_dtu](https://github.com/nanoporetech/pipeline-transcriptome-de/tree/paired_dge_dtu) branch.
 
 Dependencies 
 ------------
@@ -39,8 +40,6 @@ Edit `config.yml` to set the input datasets and parameters then issue:
 ```bash
 snakemake --use-conda -j <num_cores> all
 ```
-
-and issue snakemake <target> to invoke the target of your choice. 
 
 Output
 -----
