@@ -19,7 +19,7 @@ Installation
 Clone the repository:
 
 ```bash
-git clone https://github.com/nanoporetech/pipeline-transcriptome-de.git
+git clone -b paired_dge_dtu https://github.com/nanoporetech/pipeline-transcriptome-de.git
 ```
 
 Input
@@ -40,8 +40,6 @@ Edit `config.yml` to set the input datasets and parameters then issue:
 ```bash
 snakemake --use-conda -j <num_cores> all
 ```
-
-and issue snakemake <target> to invoke the target of your choice. 
 
 Output
 -----
