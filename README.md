@@ -19,7 +19,7 @@ Installation
 Clone the repository:
 
 ```bash
-git clone https://github.com/nanoporetech/pipeline-transcriptome-de.git
+git clone -b paired_dge_dtu https://github.com/nanoporetech/pipeline-transcriptome-de.git
 ```
 
 Input
