@@ -133,6 +133,16 @@ rule de_analysis:
     {SNAKEDIR}/scripts/de_analysis.R
     """
 
+rule plot_dtu_res:
+    input:
+        res_dtu_stager = "de_analysis/results_dtu_stageR.tsv",
+        flt_counts = "merged/all_counts_filtered.tsv",
+    output:
+        dtu_pdf = "de_analysis/dtu_plots.pdf",
+    shell: """
+    {SNAKEDIR}/scripts/plot_dtu_results.R
+    """
+
 
 rule all:
     input:
@@ -141,3 +151,4 @@ rule all:
         coldata = "de_analysis/coldata.tsv",
         de_params = "de_analysis/de_params.tsv",
         res_dge = "de_analysis/results_dge.pdf",
+        dtu_pdf = "de_analysis/dtu_plots.pdf",
