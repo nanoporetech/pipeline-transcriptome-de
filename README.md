@@ -56,6 +56,7 @@ Output
 - `de_analysis/results_dge.tsv` and `de_analysis/results_dge.pdf`- results of `edgeR` differential gene expression analysis.
 - `de_analysis/results_dtu_gene.tsv`, `de_analysis/results_dtu_transcript.tsv` and `de_analysis/results_dtu.pdf` - results of differential transcript usage by `DEXSeq`.
 - `de_analysis/results_dtu_stageR.tsv` - results of the `stageR` analysis of the `DEXSeq` output.
+- `de_analysis/dtu_plots.pdf` - DTU results plot based on the `stageR` results and filtered counts.
 
 Layout
 ------
