@@ -54,7 +54,7 @@ cat("Sum transcript counts into gene counts.\n")
 trs_cts <- counts(d)
 write.table(trs_cts, file="merged/all_counts_filtered.tsv",sep="\t")
 
-gene_cts <- trs_cts %>% select(c(1, 3:ncol(trs_cts)))  %>% group_by(gene_id) %>% summarise_all(funs(sum)) %>% data.frame()
+gene_cts <- trs_cts %>% dplyr::select(c(1, 3:ncol(trs_cts)))  %>% group_by(gene_id) %>% summarise_all(funs(sum)) %>% data.frame()
 rownames(gene_cts) <- gene_cts$gene_id
 gene_cts$gene_id <- NULL
 write.table(gene_cts, file="merged/all_gene_counts_filtered.tsv",sep="\t")
@@ -107,8 +107,9 @@ write.table(dxr, file="de_analysis/results_dtu_transcript.tsv", sep="\t")
 
 # stageR analysis of DEXSeq results:
 cat("Installing stageR.\n")
-source("https://bioconductor.org/biocLite.R")
-biocLite(pkgs=c("stageR"), suppressUpdates=TRUE, suppressAutoUpdate=TRUE, siteRepos=character(), ask=FALSE)
+Sys.setenv(TAR = "/bin/tar")
+library(devtools)
+install_github("statOmics/stageR")
 library(stageR)
 
 cat("Running stageR analysis on the differential transcript usage results.\n")
@@ -120,7 +121,7 @@ tx2gene <- as.data.frame(dxr[,c("featureID", "groupID")])
 stageRObj <- stageRTx(pScreen=pScreen, pConfirmation=pConfirmation, pScreenAdjusted=TRUE, tx2gene=tx2gene)
 # note: the choice of 0.05 here means you can *only* threshold at 5% OFDR later
 stageRObj <- stageWiseAdjustment(stageRObj, method="dtu", alpha=0.05)
-suppressWarnings({dex.padj <- getAdjustedPValues(stageRObj, order=TRUE, onlySignificantGenes=TRUE)})
+suppressWarnings({dex.padj <- getAdjustedPValues(stageRObj, order=FALSE, onlySignificantGenes=FALSE)})
 
 write.table(dex.padj, file="de_analysis/results_dtu_stageR.tsv", sep="\t")
 
