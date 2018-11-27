@@ -76,13 +76,6 @@ snakemake --use-conda -j <num_cores> all
 3\. Help:
 ---------
 
-## Reference:
-
-This pipeline is largely based on the approach described in the following paper:
-
-- Love MI, Soneson C and Patro R. *Swimming downstream: statistical analysis of differential transcript usage following Salmon quantification.* F1000Research 2018, 7:952
-(doi: [10.12688/f1000research.15398.3](http://dx.doi.org/10.12688/f1000research.15398.3))
-
 ## Licence and Copyright:
 
 (c) 2018 Oxford Nanopore Technologies Ltd.
@@ -95,6 +88,11 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 ## References and Supporting Information:
 
-See the post announcing the tool at the Oxford Nanopore community [here](https://community.nanoporetech.com/posts/new-transcriptomics-analys).
+This pipeline is largely based on the approach described in the following paper:
 
+- Love MI, Soneson C and Patro R. *Swimming downstream: statistical analysis of differential transcript usage following Salmon quantification.* F1000Research 2018, 7:952
+(doi: [10.12688/f1000research.15398.3](http://dx.doi.org/10.12688/f1000research.15398.3))
+
+
+See the post announcing the tool at the Oxford Nanopore community [here](https://community.nanoporetech.com/posts/new-transcriptomics-analys).
 
