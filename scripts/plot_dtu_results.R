@@ -50,7 +50,7 @@ pdf("de_analysis/dtu_plots.pdf")
 for(gene in genes){
     gdf<-tdf[which(tdf$gene_id==gene),]
     p_gene <- unique(gdf$p_gene)
-    p <- ggplot(gdf, aes(x=transcript_id, y=norm_count)) + geom_bar(stat="identity", aes(fill=sample), position="stack")
+    p <- ggplot(gdf, aes(x=transcript_id, y=norm_count)) + geom_bar(stat="identity", aes(fill=sample), position="dodge")
     p <- p + facet_wrap(~ group) + coord_flip()
     p <- p + ggtitle(paste(gene," : p_value=",p_gene,sep=""))
     print(p)
