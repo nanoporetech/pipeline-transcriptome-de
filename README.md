@@ -94,5 +94,5 @@ This pipeline is largely based on the approach described in the following paper:
 (doi: [10.12688/f1000research.15398.3](http://dx.doi.org/10.12688/f1000research.15398.3))
 
 
-See the post announcing the tool at the Oxford Nanopore community [here](https://community.nanoporetech.com/posts/new-transcriptomics-analys).
+See the post announcing the tool at the Oxford Nanopore Technologies community [here](https://community.nanoporetech.com/posts/new-transcriptomics-analys).
 
