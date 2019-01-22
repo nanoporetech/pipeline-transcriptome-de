@@ -88,12 +88,12 @@ dxd <- DEXSeqDataSet(countData=count.data, sampleData=sample.data, design=~sampl
 dxd <- estimateSizeFactors(dxd)
 dxd <- estimateDispersions(dxd)
 dxd <- testForDEU(dxd, reducedModel=~sample + exon + patient:exon)
+dxd <- estimateExonFoldChanges( dxd, fitExpToVar="condition")
 dxr <- DEXSeqResults(dxd, independentFiltering=FALSE)
-dxr.clean <- dxr[!is.na(dxr$padj), ]
 
 dev.off()
 pdf("de_analysis/results_dtu.pdf")
-#plotMA(dxr.clean, cex=0.8, alpha=0.05) # FIXME: does not work and complains about NAs.
+plotMA(dxr, cex=0.8, alpha=0.05) 
 plotDispEsts(dxd)
 
 qval <- perGeneQValue(dxr) 
