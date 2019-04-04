@@ -1,0 +1,148 @@
+settings:
+  environ:
+    working_directory: .
+    temporary_directory: ''
+    output_directory: ''
+    custom:
+      Baywatch:
+        name: 'DGE/DTU pipeline'
+        description: |
+            This pipeline uses snakemake, minimap2, salmon, edgeR, DEXSeq and stageR to automate simple differential gene expression and differential transcript usage workflows on long read data.
+        fields:
+        - label: Transcriptome fasta
+          description: Transcriptome fasta
+          path: workflow.data.transcriptome.path
+          fieldType: file
+        - label: Annotation GFF/GTF
+          description: Annotation GFF/GTF
+          path: workflow.data.annotation.path
+          fieldType: file
+        - label: Minimap2 indexing options
+          description: Minimap2 indexing options
+          path: workflow.data.minimap_index_opts.path
+          fieldType: string
+          value: ''
+        - label: Minimap2 mapping options
+          description: Minimap2 mapping options
+          path: workflow.data.minimap2_opts.path
+          fieldType: string
+          value: ''
+        - label: Maximum secondary alignments
+          description: Maximum secondary alignments
+          path: workflow.data.maximum_secondary.path
+          fieldType: number
+          value: 100
+        - label: Salmon library type
+          description: Salmon library type
+          path: workflow.data.salmon_libtype.path
+          fieldType: string
+          value: U
+        - label: Genes expressed in minimum this many samples
+          description: Genes expressed in minimum this many samples
+          path: workflow.data.min_samps_gene_expr.path
+          fieldType: number
+          value: 3
+        - label: Transcripts expressed in minimum this many samples
+          description: Transcripts expressed in minimum this many samples
+          path: workflow.data.min_samps_feature_expr.path
+          fieldType: number
+          value: 1
+        - label: Minimum gene counts
+          description: Minimum gene counts
+          path: workflow.data.min_gene_expr.path
+          fieldType: number
+          value: 10
+        - label: Minimum transcript counts
+          description: Minimum transcript counts
+          path: workflow.data.min_feature_expr.path
+          fieldType: number
+          value: 3
+        - label: Threads
+          description: Threads
+          path: workflow.data.threads.path
+          fieldType: number
+          value: 50
+workflow:
+  data:
+    transcriptome:
+      class: File
+      path: ''
+    annotation:
+      class: File
+      path: ''
+    KEYS_control_samples:
+    - C4.p4
+    - C5.p5
+    - C6.p6
+    control_samples:
+    - class: File
+      path: ''
+    - class: File
+      path: ''
+    - class: File
+      path: ''
+    KEYS_treated_samples:
+    - IR4.p4
+    - IR5.p5
+    - IR6.p6
+    treated_samples:
+    - class: File
+      path: ''
+    - class: File
+      path: ''
+    - class: File
+      path: ''
+    minimap_index_opts: ''
+    minimap2_opts: ''
+    maximum_secondary: 100
+    salmon_libtype: U
+    min_samps_gene_expr: 3
+    min_samps_feature_expr: 1
+    min_gene_expr: 10
+    min_feature_expr: 3
+    threads: 50
+  steps:
+  - Process:
+      name: ''
+      HostSNK:
+        target: all
+        cores: 5
+        location:
+          class: Directory
+          path: .
+        config_template:
+          class: File
+          path: config.yml
+        inputs:
+        - path: data.transcriptome
+          confpath: transcriptome
+          remap: paths
+        - path: data.annotation
+          confpath: annotation
+          remap: paths
+        - path: data.control_samples
+          confpath: control_samples
+          names: data.KEYS_control_samples
+          remap: samples
+        - path: data.treated_samples
+          confpath: treated_samples
+          names: data.KEYS_treated_samples
+          remap: samples
+        - path: data.minimap_index_opts
+          confpath: minimap_index_opts
+        - path: data.minimap2_opts
+          confpath: minimap2_opts
+        - path: data.maximum_secondary
+          confpath: maximum_secondary
+        - path: data.salmon_libtype
+          confpath: salmon_libtype
+        - path: data.min_samps_gene_expr
+          confpath: min_samps_gene_expr
+        - path: data.min_samps_feature_expr
+          confpath: min_samps_feature_expr
+        - path: data.min_gene_expr
+          confpath: min_gene_expr
+        - path: data.min_feature_expr
+          confpath: min_feature_expr
+        - path: data.threads
+          confpath: threads
