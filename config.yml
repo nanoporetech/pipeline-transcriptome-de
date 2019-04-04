@@ -2,7 +2,7 @@
 ## General pipeline parameters:
 
 # Name of the pipeline:
-pipeline: "pipeline-transcriptome-de_paired"
+pipeline: "pipeline-transcriptome-de"
 # ABSOLUTE path to directory holding the working directory:
 workdir_top: "Workspaces"
 # Results directory:
@@ -12,41 +12,50 @@ repo: "https://github.com/nanoporetech/pipeline-transcriptome-de/tree/paired_dge
 
 ## Pipeline-specific parameters:
 
+# Transcriptome fasta
 transcriptome: "Homo_sapiens.GRCh38.cdna.all.fa"
 
+# Annotation GFF/GTF
 annotation: "Homo_sapiens.GRCh38.93.gtf"
 
-# The samples should be named as <sample_id>.<patient_id>:
+# Control samples
 control_samples:
     C1.p1: "C1.fq"
     C2.p2: "C2.fq"
     C3.p3: "C3.fq"
 
+# Treated samples
 treated_samples:
     IR1.p1: "IR1.fq"
     IR2.p2: "IR2.fq"
     IR3.p3: "IR3.fq"
 
+# Minimap2 indexing options
 minimap_index_opts: ""
 
+# Minimap2 mapping options
 minimap2_opts: ""
 
+# Maximum secondary alignments
 maximum_secondary: 100
 
+# Secondary score ratio (-p for minimap2)
 secondary_score_ratio: 1.0
 
-salmon_libtype: "SF"
+# Salmon library type
+salmon_libtype: "U"
 
 # Count filtering options - customize these according to your experimental design:
 
-# Genes expressed in minimum this many samples:
+# Genes expressed in minimum this many samples
 min_samps_gene_expr: 3
-# Transcripts expressed in minimum this many samples:
+# Transcripts expressed in minimum this many samples
 min_samps_feature_expr: 1
-# Minimum gene counts:
+# Minimum gene counts
 min_gene_expr: 10
-# Minimum transcript counts:
+# Minimum transcript counts
 min_feature_expr: 3
 
+# Threads
 threads: 50
 
