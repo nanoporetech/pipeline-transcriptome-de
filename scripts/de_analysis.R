@@ -9,7 +9,7 @@ cts <- as.matrix(read.csv("merged/all_counts.tsv", sep="\t", row.names="Referenc
 # Set up sample data frame:
 coldata <- read.csv("de_analysis/coldata.tsv", row.names="sample", sep="\t")
 coldata$sample_id <- rownames(coldata)
-coldata$condition <- factor(coldata$condition, levels=rev(levels(coldata$condition)))
+coldata$condition <- factor(coldata$condition, levels=rev(unique(coldata$condition)))
 
 de_params <- read.csv("de_analysis/de_params.tsv", sep="\t", stringsAsFactors=FALSE)
 
@@ -107,10 +107,7 @@ write.table(dxr.g, file="de_analysis/results_dtu_gene.tsv", sep="\t")
 write.table(dxr, file="de_analysis/results_dtu_transcript.tsv", sep="\t")
 
 # stageR analysis of DEXSeq results:
-cat("Installing stageR.\n")
-Sys.setenv(TAR = "/bin/tar")
-library(devtools)
-install_github("statOmics/stageR")
+cat("stageR analysis\n")
 library(stageR)
 
 cat("Running stageR analysis on the differential transcript usage results.\n")
