@@ -3,7 +3,7 @@ from os import path
 import pandas as pd
 from collections import OrderedDict
 
-if not workflow.overwrite_configfile:
+if not workflow.overwrite_configfiles:
     configfile: "config.yml"
 workdir: path.join(config["workdir_top"], config["pipeline"])
 
