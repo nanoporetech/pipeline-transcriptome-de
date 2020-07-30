@@ -101,7 +101,7 @@ dxr.g<-data.frame(gene=names(qval), qval)
 dxr.g <- dxr.g[order(dxr.g$qval),]
 
 dxr_out <- as.data.frame(dxr[,c("featureID", "groupID", "pvalue")])
-dxr_out <- dxr[order(dxr$pvalue),]
+dxr_out <- dxr_out[order(dxr$pvalue),]
 
 write.table(dxr.g, file="de_analysis/results_dtu_gene.tsv", sep="\t")
 write.table(dxr_out, file="de_analysis/results_dtu_transcript.tsv", sep="\t")
