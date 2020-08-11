@@ -100,11 +100,19 @@ qval <- perGeneQValue(dxr)
 dxr.g<-data.frame(gene=names(qval), qval)
 dxr.g <- dxr.g[order(dxr.g$qval),]
 
-dxr <- as.data.frame(dxr[,c("featureID", "groupID", "pvalue")])
-dxr <- dxr[order(dxr$pvalue),]
+dxr_out <- as.data.frame(dxr[,c("featureID", "groupID", "pvalue")])
+dxr_out <- dxr_out[order(dxr$pvalue),]
 
 write.table(dxr.g, file="de_analysis/results_dtu_gene.tsv", sep="\t")
-write.table(dxr, file="de_analysis/results_dtu_transcript.tsv", sep="\t")
+write.table(dxr_out, file="de_analysis/results_dtu_transcript.tsv", sep="\t")
+
+# and writing out some of the DEXSeq metrics to accompany EPI2ME Labs tutorial
+colnames(dxr)[grep("log2fold", colnames(dxr))] <- "log2fold"
+MADTUdata <- data.frame(dxr)[order(dxr$padj),c("exonBaseMean", "log2fold", "pvalue", "padj")]
+MADTUdata$exonBaseMean <- log2(MADTUdata$exonBaseMean)
+colnames(MADTUdata)[which(colnames(MADTUdata)=="exonBaseMean")] <- "Log2MeanExon"
+colnames(MADTUdata)[which(colnames(MADTUdata)=="log2fold")] <- "Log2FC"
+write.table(MADTUdata, file="de_analysis/results_dexseq.tsv", sep="\t")
 
 # stageR analysis of DEXSeq results:
 cat("stageR analysis\n")
