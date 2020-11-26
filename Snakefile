@@ -144,6 +144,7 @@ rule plot_dtu_res:
         flt_counts = "merged/all_counts_filtered.tsv",
     output:
         dtu_pdf = "de_analysis/dtu_plots.pdf",
+    conda: "env.yml"
     shell: """
     {SNAKEDIR}/scripts/plot_dtu_results.R
     """
