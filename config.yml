@@ -16,7 +16,7 @@ repo: "https://github.com/nanoporetech/pipeline-transcriptome-de"
 transcriptome: "Homo_sapiens.GRCh38.cdna.all.fa"
 
 # Annotation GFF/GTF
-annotation: "Homo_sapiens.GRCh38.93.gtf"
+annotation: "Homo_sapiens.GRCh38.102.gtf"
 
 # Control samples
 control_samples:
