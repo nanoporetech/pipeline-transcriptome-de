@@ -11,7 +11,7 @@ def generate_help(sfile):
 
 rule help: ## print list of all targets with help
     input:
-        workflow.included
+        [str(x) for x in workflow.included]
     run:
         print("--------------------------------------------")
         [generate_help(sfile) for sfile in input]
