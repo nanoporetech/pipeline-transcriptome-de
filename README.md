@@ -1,18 +1,22 @@
 ![ONT_logo](/ONT_logo.png)
 -----------------------------
 
-Pipeline for differential gene expression (DGE) and differential transcript usage (DTU) analysis using long reads
-==================================================================================================================
+> This project is deprecated. Please see our newer [wf-transcriptomes](https://github.com/epi2me-labs/wf-transcriptomes), which contains functionality for [differential expression](https://github.com/epi2me-labs/wf-transcriptomes#differential-expression).
+
+
+-----------------------------
+
+
+*Pipeline for differential gene expression (DGE) and differential transcript usage (DTU) analysis using long reads*
 
 This pipeline uses [snakemake](https://snakemake.readthedocs.io/en/stable/), [minimap2](https://github.com/lh3/minimap2), [salmon](https://combine-lab.github.io/salmon/), [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html), [DEXSeq](https://bioconductor.org/packages/release/bioc/html/DEXSeq.html) and [stageR](https://bioconductor.org/packages/release/bioc/html/stageR.html) to automate simple [differential gene expression](https://www.ebi.ac.uk/training/online/course/functional-genomics-ii-common-technologies-and-data-analysis-methods/differential-gene) and [differential transcript usage](http://dx.doi.org/10.12688/f1000research.15398.2) workflows on long read data.
 
 If you have paired samples (e.g for example treated and untreated samples from the same individuals) use the [paired_dge_dtu](https://github.com/nanoporetech/pipeline-transcriptome-de/tree/paired_dge_dtu) branch.
 
 
-Getting Started
-===============
+## Getting Started
 
-## Input
+### Input
 
 The input files and parameters are specified in `config.yml`:
 
@@ -21,7 +25,7 @@ The input files and parameters are specified in `config.yml`:
 - `control_samples` - a dictionary with control sample names and paths to the fastq files.
 - `treated_samples` - a dictionary with treated sample names and paths to the fastq files.
 
-## Output
+### Output
 
 - `alignments/*.bam` - unsorted transcriptome alignments (input to `salmon`).
 - `alignments_sorted/*.bam` - sorted and indexed transcriptome alignments.
@@ -37,14 +41,14 @@ The input files and parameters are specified in `config.yml`:
 - `de_analysis/dtu_plots.pdf` - DTU results plot based on the `stageR` results and filtered counts.
 
 
-## Dependencies
+### Dependencies
 
 - [miniconda](https://conda.io/miniconda.html) - install it according to the [instructions](https://conda.io/docs/user-guide/install/index.html).
 - [snakemake](https://anaconda.org/bioconda/snakemake) install using `conda`.
 - [pandas](https://anaconda.org/conda-forge/pandas) - install using `conda`.
 - The rest of the dependencies are automatically installed using the `conda` feature of `snakemake`.
 
-## Layout
+### Layout
 
 * `README.md`
 * `Snakefile`         - master snakefile
@@ -55,7 +59,7 @@ The input files and parameters are specified in `config.yml`:
 * `data/`             - input data needed by pipeline - use with caution to avoid bloated repo
 * `results/`          - pipeline results to be commited - use with caution to avoid bloated repo
 
-## Installation
+### Installation
 
 Clone the repository:
 
@@ -63,7 +67,7 @@ Clone the repository:
 git clone https://github.com/nanoporetech/pipeline-transcriptome-de.git
 ```
 
-## Usage
+### Usage
 
 Edit `config.yml` to set the input datasets and parameters then issue:
 
@@ -71,10 +75,9 @@ Edit `config.yml` to set the input datasets and parameters then issue:
 snakemake --use-conda -j <num_cores> all
 ```
 
-Help
-====
+### Help
 
-## Licence and Copyright
+##### Licence and Copyright
 
 (c) 2018 Oxford Nanopore Technologies Ltd.
 
@@ -82,9 +85,7 @@ This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this
 file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-## FAQs and tips
-
-## References and Supporting Information
+#### References and Supporting Information
 
 This pipeline is largely based on the approach described in the following paper:
 
